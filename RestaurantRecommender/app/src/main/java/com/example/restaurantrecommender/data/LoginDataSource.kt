@@ -1,3 +1,5 @@
+@file:Suppress("LiftReturnOrAssignment")
+
 package com.example.restaurantrecommender.data
 
 import com.example.restaurantrecommender.data.model.LoggedInUser

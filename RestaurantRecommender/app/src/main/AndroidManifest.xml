@@ -11,7 +11,7 @@
         android:theme="@style/Theme.RestaurantRecommender">
         <activity
             android:name=".ui.login.RestaurantActivity"
-            android:label="@string/title_activity_restaurant"></activity>
+            android:label="@string/title_activity_restaurant" />
         <activity android:name=".ui.login.RegistrationActivity" />
         <activity
             android:name=".ui.login.LoginActivity"

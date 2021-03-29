@@ -1,3 +1,5 @@
+@file:Suppress("PrivatePropertyName")
+
 package com.example.restaurantrecommender.ui.login
 
 import androidx.appcompat.app.AppCompatActivity

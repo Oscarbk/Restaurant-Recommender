@@ -10,11 +10,11 @@ import com.example.restaurantrecommender.data.model.LoggedInUser
 class LoginRepository(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object
-    var user: LoggedInUser? = null
+    private var user: LoggedInUser? = null
         private set
 
-    val isLoggedIn: Boolean
-        get() = user != null
+    /*val isLoggedIn: Boolean
+        get() = user != null*/
 
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
@@ -22,10 +22,10 @@ class LoginRepository(val dataSource: LoginDataSource) {
         user = null
     }
 
-    fun logout() {
+    /*fun logout() {
         user = null
         dataSource.logout()
-    }
+    }*/
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         // handle login
