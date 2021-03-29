@@ -6,7 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.example.restaurantrecommender.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
 class RegistrationActivity : AppCompatActivity() {
 
@@ -14,6 +17,7 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var password:  EditText
     private lateinit var password2: EditText
     private lateinit var register:  Button
+    private lateinit var firebase:  FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,18 +27,36 @@ class RegistrationActivity : AppCompatActivity() {
         password  = findViewById(R.id.password2)
         password2 = findViewById(R.id.password3)
         register  = findViewById(R.id.register2)
+        firebase  = FirebaseAuth.getInstance()
 
+        // Register a new user
         register.setOnClickListener {
-            val inputUsername  = username.text.toString()
+            val inputUsername  = username.text.toString().trim()
             val inputPassword  = password.text.toString()
 
+            // TODO: use string resources when second language is required
+            firebase.createUserWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
+                if (task.isSuccessful)
+                    Toast.makeText(this, "Successfully registered as $inputUsername", Toast.LENGTH_LONG).show()
+                else {
+                    val exception = task.exception
+                    if (exception is FirebaseAuthUserCollisionException) {
+                        Toast.makeText(this, "An account already exists for $inputUsername", Toast.LENGTH_LONG).show()
+                    } else {
+                        // We could also split out other exceptions to further customize errors
+                        // https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuthException
+                        Toast.makeText(this, "Failed to register: $exception", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
 
         username .addTextChangedListener(TextWatcher)
         password .addTextChangedListener(TextWatcher)
         password2.addTextChangedListener(TextWatcher)
     }
-    // Detect when search bar has input
+
+    // Detect when fields have input
     private val TextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -52,8 +74,7 @@ class RegistrationActivity : AppCompatActivity() {
                 allowRegistration = true
             register.isEnabled = allowRegistration
         }
-        override fun afterTextChanged(s: Editable?) {
-        }
-
+        // Not needed
+        override fun afterTextChanged(s: Editable?) {}
     }
 }
