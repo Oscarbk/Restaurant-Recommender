@@ -17,10 +17,12 @@ import android.widget.ProgressBar
 import android.widget.Toast
 
 import com.example.restaurantrecommender.R
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var firebase: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         val register = findViewById<Button>(R.id.register)
+        firebase  = FirebaseAuth.getInstance()
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -99,7 +102,19 @@ class LoginActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                val inputUsername = username.text.toString().trim()
+                val inputPassword = password.text.toString()
+
+                firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val exception = task.exception
+                        Toast.makeText(this@LoginActivity, "Failed: $exception", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
