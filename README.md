@@ -1,5 +1,17 @@
 **!!PLEASE READ THE GETTING STARTED SECTION BELOW!!**
 
+# Check-in-1
+* I chose to implement the firebase db complexity
+  * A user can create a new account and use it to sign into the app
+  * The sign-up screen ensures passwords match and account does not already exist
+    * Later I'll make sure passwords are strong
+  * Log-in screen logs you in if email and password are correct
+  * I'll use FB to store a user's recent restaurant choices and custom preferences later
+    * setup the recyclerView for the recent picks fragment
+* I also set up a large part of the home screen fragment
+  * Only UI components are set up
+
+
 # CSCI 4237 - Project 2 - BYOI
 Bring Your Own Idea!
 
