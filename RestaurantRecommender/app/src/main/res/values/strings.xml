@@ -40,4 +40,7 @@
     <string name="steak">Steak</string>
     <string name="sushi">Sushi</string>
     <string name="thai">Thai</string>
+
+    <string name="search">Search</string>
+
 </resources>
