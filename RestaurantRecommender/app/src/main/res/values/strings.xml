@@ -15,4 +15,29 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Recent Picks</string>
     <string name="title_notifications">Notifications</string>
+    
+    <!--Strings related to home fragment-->
+    <string name="price">Price</string>
+    <string name="at_most">At Most</string>
+    <string name="exactly">Exactly</string>
+    <string name="at_least">At Least</string>
+    <string name="any">Any</string>
+    
+    <string name="range">Range</string>
+
+    <string name="cuisine">Cuisine</string>
+    <string name="american">American</string>
+    <string name="bbq">Barbecue</string>
+    <string name="chinese">Chinese</string>
+    <string name="french">French</string>
+    <string name="hamburger">Hamburger</string>
+    <string name="indian">Indian</string>
+    <string name="italian">Italian</string>
+    <string name="japanese">Japanese</string>
+    <string name="mexican">Mexican</string>
+    <string name="pizza">Pizza</string>
+    <string name="seafood">Seafood</string>
+    <string name="steak">Steak</string>
+    <string name="sushi">Sushi</string>
+    <string name="thai">Thai</string>
 </resources>
