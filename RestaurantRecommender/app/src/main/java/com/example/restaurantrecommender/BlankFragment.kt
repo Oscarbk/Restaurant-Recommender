@@ -1,10 +1,21 @@
 package com.example.restaurantrecommender
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.restaurantrecommender.ui.login.Restaurant
+import com.example.restaurantrecommender.ui.login.RestaurantAdapter
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.jetbrains.anko.doAsync
+import org.json.JSONObject
+import org.jetbrains.anko.doAsync
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +32,9 @@ class BlankFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,12 +43,64 @@ class BlankFragment : Fragment() {
         }
     }
 
+    private fun retrieveRestaurants(): List<Restaurant>{
+        val oAuthToken = resources.getString(R.string.yelpKey)
+        val searchLocation = "D.C."
+        val radius = "30mi"
+        val request = Request.Builder()
+            .get()
+            .url("https://api.yelp.com/v3/businesses/search?location=D.C.")
+            .header("Authorization", "Bearer $oAuthToken")
+            .build()
+        val response: Response = okHttpClient.newCall(request).execute()
+        val responseBody: String? = response.body?.string()
+        val restaurants = mutableListOf<Restaurant>()
+
+        if (response.isSuccessful && !responseBody.isNullOrBlank()) {
+            Log.d("result", "got a good response")
+            val json = JSONObject(responseBody)
+            val businesses = json.getJSONArray("businesses")
+
+            for (i in 0 until businesses.length()) {
+                val curr = businesses.getJSONObject(i)
+                val name = curr.getString("name")
+                val ImageUrl = curr.getString("image_url")
+                val isClosed = curr.getString("is_closed")
+                val url = curr.getString("url")
+                val address = curr.getJSONObject("location").getString("address1")
+
+                val restaurant = Restaurant(
+                    name = name,
+                    description = "",
+                    address = address,
+                    menu = "",
+                    iconUrl = "",
+                )
+                restaurants.add(restaurant)
+            }
+        }
+        return restaurants
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false)
+        val root = inflater.inflate(R.layout.fragment_blank, container, false)
+        //val root = inflater.inflate(R.layout.fragment_home, container, false)
+
+        recyclerView = root.findViewById(R.id.recyclerView)
+        doAsync {
+            val restaurants = retrieveRestaurants()
+
+            activity?.runOnUiThread {
+                val adapter = RestaurantAdapter(restaurants)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(activity)
+            }
+        }
+        return root
     }
 
     companion object {

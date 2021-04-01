@@ -51,10 +51,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Firebase Library
     implementation platform('com.google.firebase:firebase-bom:26.5.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // Library to easily manage fragments
     def nav_version = "2.3.4"
 
     // Java language implementation
@@ -73,5 +75,15 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+
+    // Library for Networking
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    // For logging request / responses to console
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    // Library for doing asynchronous tasks
+    implementation 'org.jetbrains.anko:anko-commons:0.10.8'
 
 }
