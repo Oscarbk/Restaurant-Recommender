@@ -49,7 +49,7 @@ class BlankFragment : Fragment() {
         val radius = "30mi"
         val request = Request.Builder()
             .get()
-            .url("https://api.yelp.com/v3/businesses/search?location=D.C.")
+            .url("https://api.yelp.com/v3/businesses/search?location=D.C.&radius=4000&food=restaurants&categories=peruvian")
             .header("Authorization", "Bearer $oAuthToken")
             .build()
         val response: Response = okHttpClient.newCall(request).execute()
@@ -68,9 +68,28 @@ class BlankFragment : Fragment() {
                 val isClosed = curr.getString("is_closed")
                 val url = curr.getString("url")
                 val address = curr.getJSONObject("location").getString("address1")
+                val categories = curr.getJSONArray("categories")
+                val title1 = categories.getJSONObject(0).getString("title")
+
+                var title2 = ""
+                if (categories.length() > 1) {
+                    title2 = " ${resources.getString(R.string.bullet)} ${categories.getJSONObject(1).getString("title")}"
+                }
+                val rating = curr.getDouble("rating")
+
+                var price = ""
+                try {
+                    price = " ${resources.getString(R.string.bullet)} ${curr.getString("price")}"
+                } catch(e: org.json.JSONException) {
+
+                }
+
 
                 val restaurant = Restaurant(
                     name = name,
+                    title = "$title1$title2",
+                    rating = 3.0,
+                    price = price,
                     description = "",
                     address = address,
                     menu = "",

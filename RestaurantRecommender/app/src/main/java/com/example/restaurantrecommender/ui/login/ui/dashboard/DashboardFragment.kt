@@ -48,6 +48,9 @@ class DashboardFragment : Fragment() {
         return listOf(
             Restaurant(
                 name = "McDonald's",
+                title = "heart disease",
+                rating = 2.5,
+                price = "$",
                 description = "since 1888",
                 address = "literally everywhere",
                 menu = "no menu",

@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantrecommender.R
 import com.squareup.picasso.Picasso
+import org.jetbrains.anko.find
 
 
 class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
@@ -37,9 +38,12 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         // for position indicated -- override the UI elements with the correct data
         val currentSource = sources[position]
         holder.name.text = currentSource.name
+        holder.title.text = currentSource.title
+        holder.rating.text = currentSource.rating.toString()
+        holder.price.text = currentSource.price
         holder.description.text = currentSource.description
 
-        if (holder.name.text == "null")        holder.name.visibility        = View.GONE
+        if (holder.name.text == "null") holder.name.visibility = View.GONE
         if (holder.description.text == "null") holder.description.visibility = View.GONE
 
 
@@ -81,6 +85,9 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.name)
+        val title: TextView = itemView.findViewById(R.id.RestaurantTitle)
+        val rating: TextView = itemView.findViewById(R.id.rating)
+        val price: TextView = itemView.findViewById(R.id.cost)
         val description: TextView = itemView.findViewById(R.id.description)
         val click: ConstraintLayout = itemView.findViewById(R.id.card_view_layout)
         val icon: ImageView = itemView.findViewById(R.id.image)
