@@ -84,6 +84,8 @@ class BlankFragment : Fragment() {
 
                 }
 
+                val image = curr.getString("image_url")
+
 
                 val restaurant = Restaurant(
                     name = name,
@@ -93,7 +95,7 @@ class BlankFragment : Fragment() {
                     description = "",
                     address = address,
                     menu = "",
-                    iconUrl = "",
+                    iconUrl = image,
                 )
                 restaurants.add(restaurant)
             }

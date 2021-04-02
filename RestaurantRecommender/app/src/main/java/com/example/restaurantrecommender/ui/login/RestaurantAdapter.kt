@@ -45,18 +45,15 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
 
         if (holder.name.text == "null") holder.name.visibility = View.GONE
         if (holder.description.text == "null") holder.description.visibility = View.GONE
-
-
-
-       /* if (!currentSource.iconUrl.isNullOrBlank()) {
+        if (currentSource.iconUrl.isNotBlank()) {
             Picasso.get()
                 .load(currentSource.iconUrl)
-                .resize(0, 1024)
+                .resize(0, 512)
                 .onlyScaleDown()
                 .into(holder.icon)
         }
-        else holder.icon.visibility = View.GONE
 
+        /*
         val test = currentSource.url
         holder.click.setOnClickListener() {
             Log.d("BUTTON", "Was URL passed: ${currentSource.iconUrl}")
