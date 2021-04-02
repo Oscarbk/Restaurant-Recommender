@@ -36,14 +36,15 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                app:layout_constraintEnd_toStartOf="@+id/image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Android Central" />
+                tools:text="Restaurant Name" />
 
             <TextView
                 android:id="@+id/RestaurantTitle"
@@ -59,8 +60,8 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="128dp"
+                android:layout_height="192dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
                 app:layout_constraintEnd_toEndOf="parent"
