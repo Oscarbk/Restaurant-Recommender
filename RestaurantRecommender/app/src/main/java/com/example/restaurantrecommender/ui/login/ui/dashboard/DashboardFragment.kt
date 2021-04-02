@@ -55,6 +55,7 @@ class DashboardFragment : Fragment() {
                 address = "literally everywhere",
                 menu = "no menu",
                 iconUrl = "null",
+                transaction = "",
             ),
         )
     }

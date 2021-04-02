@@ -85,6 +85,14 @@ class BlankFragment : Fragment() {
                 }
 
                 val image = curr.getString("image_url")
+                // TODO: Probably more efficient way to do this with regex
+                val transactions = curr.getJSONArray("transactions")
+                    .toString()
+                    .replace(",", resources.getString(R.string.bullet))
+                    .replace("[", "")
+                    .replace("]", "")
+                    .replace("\"${resources.getString(R.string.bullet)}\"", " ${resources.getString(R.string.bullet)} ")
+                    .replace("\"", "")
 
 
                 val restaurant = Restaurant(
@@ -96,6 +104,7 @@ class BlankFragment : Fragment() {
                     address = address,
                     menu = "",
                     iconUrl = image,
+                    transaction = transactions,
                 )
                 restaurants.add(restaurant)
             }

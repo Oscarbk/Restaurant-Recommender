@@ -9,4 +9,5 @@ data class Restaurant (
     val address: String,
     val menu: String,
     val iconUrl: String,
+    val transaction: String,
 )

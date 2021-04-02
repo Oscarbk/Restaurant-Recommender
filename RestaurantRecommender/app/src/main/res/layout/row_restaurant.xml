@@ -23,26 +23,27 @@
             android:layout_margin="8dp">
 
             <TextView
+                android:id="@+id/transaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating"
+                tools:text="transaction" />
+
+            <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:maxLines="2"
-                android:ellipsize="end"
                 tools:text="Android Central" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image"
-                android:padding="5sp"
-                tools:text="Android is a mobile operating system developed by Google, based on a modified version of the Linux kernel and other open source software and designed primarily for touchscreen mobile devices such as smartphones and tablets." />
 
             <TextView
                 android:id="@+id/RestaurantTitle"
@@ -54,7 +55,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name"
-                tools:text="source" />
+                tools:text="category" />
 
             <ImageView
                 android:id="@+id/image"
@@ -62,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -76,7 +77,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/RestaurantTitle"
-                tools:text="source" />
+                tools:text="rating" />
 
             <TextView
                 android:id="@+id/cost"
@@ -88,7 +89,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/rating"
                 app:layout_constraintTop_toBottomOf="@+id/RestaurantTitle"
-                tools:text="source" />
+                tools:text="price" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
