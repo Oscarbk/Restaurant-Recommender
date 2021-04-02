@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restaurantrecommender.ui.login.Restaurant
@@ -34,6 +35,7 @@ class BlankFragment : Fragment() {
 
     val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
     private lateinit var recyclerView: RecyclerView
+    private lateinit var loadingBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +122,7 @@ class BlankFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_blank, container, false)
         //val root = inflater.inflate(R.layout.fragment_home, container, false)
 
+        loadingBar = root.findViewById(R.id.progressBar)
         recyclerView = root.findViewById(R.id.recyclerView)
         doAsync {
             val restaurants = retrieveRestaurants()
@@ -128,6 +131,7 @@ class BlankFragment : Fragment() {
                 val adapter = RestaurantAdapter(restaurants)
                 recyclerView.adapter = adapter
                 recyclerView.layoutManager = LinearLayoutManager(activity)
+                loadingBar.visibility = View.GONE
             }
         }
         return root
