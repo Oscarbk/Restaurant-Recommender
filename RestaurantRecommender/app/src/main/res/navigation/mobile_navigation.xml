@@ -30,5 +30,10 @@
         android:id="@+id/blankFragment"
         android:name="com.example.restaurantrecommender.BlankFragment"
         android:label="@string/title_results"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_blank" >
+        <argument
+            android:name="apiCall"
+            app:argType="string"
+            android:defaultValue="nothing passed" />
+    </fragment>
 </navigation>

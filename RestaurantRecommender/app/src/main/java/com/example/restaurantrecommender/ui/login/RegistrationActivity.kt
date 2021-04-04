@@ -13,7 +13,7 @@ import com.example.restaurantrecommender.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
-class RegistrationActivity : AppCompatActivity() {
+class RegistrationActivity : AppCompatActivity(){
 
     private lateinit var username:  EditText
     private lateinit var password:  EditText
