@@ -105,12 +105,13 @@ class BlankFragment : Fragment() {
                     .replace("]", "")
                     .replace("\"${resources.getString(R.string.bullet)}\"", " ${resources.getString(R.string.bullet)} ")
                     .replace("\"", "")
+                    .replace("restaurant_", "")
 
 
                 val restaurant = Restaurant(
                         name = name,
                         title = "$title1$title2",
-                        rating = 3.0,
+                        rating = rating,
                         price = price,
                         description = "",
                         address = address,
