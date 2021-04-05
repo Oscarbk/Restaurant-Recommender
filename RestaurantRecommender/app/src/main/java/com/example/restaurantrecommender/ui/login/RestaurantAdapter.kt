@@ -18,6 +18,7 @@ import com.squareup.picasso.Transformation
 import org.jetbrains.anko.find
 import org.w3c.dom.Text
 import android.graphics.*
+import android.widget.ImageButton
 
 /*
 * Following class taken from user Chandler's Kotlin translation of stevyhacker's answer
@@ -70,6 +71,7 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         holder.rating.text = currentSource.rating.toString()
         holder.price.text = currentSource.price
         holder.transaction.text = currentSource.transaction
+        var setChecked = false
 
         if (holder.name.text == "null") holder.name.visibility = View.GONE
         if (currentSource.iconUrl.isNotBlank()) {
@@ -84,6 +86,15 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
 
 
                 //Log.d("resize", "${image.width}")
+        }
+
+        // TODO: Fill this out later for favorites fragment
+        holder.favorite.setOnClickListener {
+            setChecked = !setChecked
+            if (setChecked)
+                holder.favorite.setImageResource(R.drawable.ic_favorite_checked)
+            else
+                holder.favorite.setImageResource(R.drawable.ic_favorite_unchecked)
         }
 
         /*
@@ -121,6 +132,7 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         val click: ConstraintLayout = itemView.findViewById(R.id.card_view_layout)
         val icon: ImageView = itemView.findViewById(R.id.image)
         val transaction: TextView = itemView.findViewById(R.id.transaction)
+        val favorite: ImageButton = itemView.findViewById(R.id.favorite)
     }
 
 }
