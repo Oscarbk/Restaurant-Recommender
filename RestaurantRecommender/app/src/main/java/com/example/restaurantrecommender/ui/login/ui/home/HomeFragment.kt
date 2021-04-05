@@ -1,6 +1,8 @@
 package com.example.restaurantrecommender.ui.login.ui.home
 
 import android.R.attr.key
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -70,18 +72,25 @@ class HomeFragment : Fragment() {
         atMost.setOnClickListener {
             seekPrice.visibility = View.VISIBLE
             priceView.visibility = View.VISIBLE
+            seekPrice.progressTintList = ColorStateList.valueOf(Color.MAGENTA)
         }
         exactly.setOnClickListener {
             seekPrice.visibility = View.VISIBLE
             priceView.visibility = View.VISIBLE
+
+            seekPrice.progressTintList = ColorStateList.valueOf(Color.TRANSPARENT)
         }
         atLeast.setOnClickListener {
             seekPrice.visibility = View.VISIBLE
             priceView.visibility = View.VISIBLE
+            seekPrice.progressTintList = ColorStateList.valueOf(Color.MAGENTA)
+
+            seekPrice.rotation = 180.0F
         }
         any.setOnClickListener {
             seekPrice.visibility = View.GONE
             priceView.visibility = View.GONE
+            seekPrice.progressTintList = ColorStateList.valueOf(Color.MAGENTA)
         }
 
         /*
