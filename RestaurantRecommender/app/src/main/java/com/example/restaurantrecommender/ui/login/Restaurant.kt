@@ -10,4 +10,5 @@ data class Restaurant (
     val menu: String,
     val iconUrl: String,
     val transaction: String,
+    val businessID: String,
 )

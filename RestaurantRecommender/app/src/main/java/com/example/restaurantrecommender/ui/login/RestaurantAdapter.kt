@@ -1,5 +1,6 @@
 package com.example.restaurantrecommender.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
@@ -19,6 +20,7 @@ import org.jetbrains.anko.find
 import org.w3c.dom.Text
 import android.graphics.*
 import android.widget.ImageButton
+import com.google.firebase.database.FirebaseDatabase
 
 /*
 * Following class taken from user Chandler's Kotlin translation of stevyhacker's answer
@@ -46,6 +48,8 @@ class RoundCornersTransform(private val radiusInPx: Float) : Transformation {
 
 }
 class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Need to render a new row -- inflate (load) the XML file and return a ViewHolder
@@ -91,10 +95,22 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         // TODO: Fill this out later for favorites fragment
         holder.favorite.setOnClickListener {
             setChecked = !setChecked
-            if (setChecked)
+            firebaseDatabase = FirebaseDatabase.getInstance()
+            val preferences = holder.favorite.context.getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+            val getUserId = preferences.getString("username", "")
+            // Add the favorite restaurant to the database for this user
+            if (setChecked) {
                 holder.favorite.setImageResource(R.drawable.ic_favorite_checked)
-            else
+                Log.d("favorite", "${currentSource.businessID}")
+                val reference = firebaseDatabase.getReference("users/$getUserId")
+                reference.push().setValue(currentSource.businessID)
+
+            }
+            // Remove the restaurant from the database for this user
+            else {
                 holder.favorite.setImageResource(R.drawable.ic_favorite_unchecked)
+
+            }
         }
 
         /*

@@ -69,10 +69,17 @@ class HomeFragment : Fragment() {
             else                      chipGroup.visibility = View.VISIBLE
         }
 
+        // Following buttons deal with selecting a price range
+        // TODO: Implement rotation later
         atMost.setOnClickListener {
             seekPrice.visibility = View.VISIBLE
             priceView.visibility = View.VISIBLE
             seekPrice.progressTintList = ColorStateList.valueOf(Color.MAGENTA)
+
+            /*if (seekPrice.rotation == 180.0F) {
+                seekPrice.rotation = 0.0F
+
+            }*/
         }
         exactly.setOnClickListener {
             seekPrice.visibility = View.VISIBLE
@@ -85,7 +92,7 @@ class HomeFragment : Fragment() {
             priceView.visibility = View.VISIBLE
             seekPrice.progressTintList = ColorStateList.valueOf(Color.MAGENTA)
 
-            seekPrice.rotation = 180.0F
+            /*if (seekPrice.rotation == 0.0F) seekPrice.rotation = 180.0F*/
         }
         any.setOnClickListener {
             seekPrice.visibility = View.GONE

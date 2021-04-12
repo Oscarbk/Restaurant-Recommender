@@ -39,7 +39,6 @@ class DashboardFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-
         return root
     }
 
@@ -56,6 +55,7 @@ class DashboardFragment : Fragment() {
                 menu = "no menu",
                 iconUrl = "null",
                 transaction = "",
+                businessID = "none",
             ),
         )
     }

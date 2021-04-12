@@ -76,7 +76,6 @@ class BlankFragment : Fragment() {
             for (i in 0 until businesses.length()) {
                 val curr = businesses.getJSONObject(i)
                 val name = curr.getString("name")
-                val ImageUrl = curr.getString("image_url")
                 val isClosed = curr.getString("is_closed")
                 val url = curr.getString("url")
                 val address = curr.getJSONObject("location").getString("address1")
@@ -107,6 +106,7 @@ class BlankFragment : Fragment() {
                     .replace("\"", "")
                     .replace("restaurant_", "")
 
+                val businessID = curr.getString("id")
 
                 val restaurant = Restaurant(
                         name = name,
@@ -118,6 +118,7 @@ class BlankFragment : Fragment() {
                         menu = "",
                         iconUrl = image,
                         transaction = transactions,
+                        businessID = businessID,
                 )
                 restaurants.add(restaurant)
             }
