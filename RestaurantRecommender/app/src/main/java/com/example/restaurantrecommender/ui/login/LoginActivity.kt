@@ -1,6 +1,7 @@
 package com.example.restaurantrecommender.ui.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,11 +19,13 @@ import android.widget.Toast
 
 import com.example.restaurantrecommender.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var firebase: FirebaseAuth
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         val loading = findViewById<ProgressBar>(R.id.loading)
         val register = findViewById<Button>(R.id.register)
         firebase  = FirebaseAuth.getInstance()
+        val preferences = getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -107,6 +111,15 @@ class LoginActivity : AppCompatActivity() {
 
                 firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        firebaseDatabase = FirebaseDatabase.getInstance()
+                        val reference = firebaseDatabase.getReference("users")
+                        val pushReference = reference.push()
+                        pushReference.setValue(inputUsername)
+                        val uniqueId = pushReference.key
+                        preferences.edit()
+                            .putString("username", uniqueId)
+                            .apply()
+
                         Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
                         startActivity(intent)
