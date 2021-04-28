@@ -35,7 +35,7 @@ class BlankFragment : Fragment() {
     private var apiCall: String? = null
     private var param2: String? = null
 
-    val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
     private lateinit var recyclerView: RecyclerView
     private lateinit var loadingBar: ProgressBar
 
@@ -91,9 +91,7 @@ class BlankFragment : Fragment() {
                 var price = ""
                 try {
                     price = " ${resources.getString(R.string.bullet)} ${curr.getString("price")}"
-                } catch (e: org.json.JSONException) {
-
-                }
+                } catch (e: org.json.JSONException) {}
 
                 val image = curr.getString("image_url")
                 // TODO: Probably more efficient way to do this with regex
