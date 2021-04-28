@@ -111,14 +111,17 @@ class LoginActivity : AppCompatActivity() {
 
                 firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        firebaseDatabase = FirebaseDatabase.getInstance()
-                        val reference = firebaseDatabase.getReference("users")
-                        val pushReference = reference.push()
-                        pushReference.setValue(inputUsername)
-                        val uniqueId = pushReference.key
-                        preferences.edit()
-                            .putString("username", uniqueId)
-                            .apply()
+                        val savedSearch = preferences.getString("username", "")
+                        if (savedSearch.isNullOrEmpty()) {
+                            firebaseDatabase = FirebaseDatabase.getInstance()
+                            val reference = firebaseDatabase.getReference("users")
+                            val pushReference = reference.push()
+                            pushReference.setValue(inputUsername)
+                            val uniqueId = pushReference.key
+                            preferences.edit()
+                                .putString("username", uniqueId)
+                                .apply()
+                        }
 
                         Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)

@@ -20,7 +20,10 @@ import org.jetbrains.anko.find
 import org.w3c.dom.Text
 import android.graphics.*
 import android.widget.ImageButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 /*
 * Following class taken from user Chandler's Kotlin translation of stevyhacker's answer
@@ -93,23 +96,50 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         }
 
         // TODO: Fill this out later for favorites fragment
+        // Set this particular restaurant card's star to checked if user has already favorited it
+        // TODO: This works but takes O(n) time for every card loaded. Should be able to be done in O(1)
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        val preferences = holder.favorite.context.getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+        val getUserId = preferences.getString("username", "")
+        val reference = firebaseDatabase.getReference("users/$getUserId")
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("favorite", "couldn't get users from database: ${databaseError.message}")
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val favorites = mutableListOf<String>()
+                dataSnapshot.children.forEach { data ->
+                    val favorite = data.getValue(String::class.java)
+                    if (favorite != null) {
+                        Log.d("favorite", favorite)
+                        if (favorite == currentSource.name) {
+                            setChecked = true
+                            holder.favorite.setImageResource(R.drawable.ic_favorite_checked)
+                        }
+                    }
+                }
+            }
+        })
+
         holder.favorite.setOnClickListener {
             setChecked = !setChecked
-            firebaseDatabase = FirebaseDatabase.getInstance()
-            val preferences = holder.favorite.context.getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
-            val getUserId = preferences.getString("username", "")
+            //firebaseDatabase = FirebaseDatabase.getInstance()
+            //val preferences = holder.favorite.context.getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+            //val getUserId = preferences.getString("username", "")
+            //val reference = firebaseDatabase.getReference("users/$getUserId")
             // Add the favorite restaurant to the database for this user
             if (setChecked) {
                 holder.favorite.setImageResource(R.drawable.ic_favorite_checked)
                 Log.d("favorite", "${currentSource.businessID}")
-                val reference = firebaseDatabase.getReference("users/$getUserId")
-                reference.push().setValue(currentSource.businessID)
+                reference.child(currentSource.businessID).setValue(currentSource.name)
 
             }
             // Remove the restaurant from the database for this user
             else {
                 holder.favorite.setImageResource(R.drawable.ic_favorite_unchecked)
 
+                reference.child(currentSource.businessID).removeValue()
             }
         }
 
