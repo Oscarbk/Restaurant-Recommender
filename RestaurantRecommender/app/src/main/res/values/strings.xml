@@ -16,6 +16,7 @@
     <string name="title_dashboard">Recent Picks</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_results">Results</string>
+    <string name="rememberUser">Remember me</string>
 
     <!--Strings related to home fragment-->
     <string name="price">Price</string>

@@ -112,22 +112,25 @@ class LoginActivity : AppCompatActivity() {
                 false
             }
 
+            val restoreUsername = preferences.getString("restoreUsername", "true")
+            rememberMe.isChecked = restoreUsername == "true"
             if (rememberMe.isChecked) {
                 Log.d("login", "The switch is in the checked state on load")
+                val getUsername = preferences.getString("savedUsername", "")
+
+                if (!getUsername.isNullOrEmpty())
+                    username.setText(getUsername)
             }
             rememberMe.setOnCheckedChangeListener { buttonView, _ ->
                 if (buttonView.isChecked) {
-                    val preferences = getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
-                    val getUsername = preferences.getString("savedUsername", "")
-                    val getPassword = preferences.getString("savedPassword", "")
-                    Log.d("login", "username gotten: ${getUsername!!}")
-
-                    if (!getUsername.isNullOrEmpty())
-                        username.setText(getUsername)
-
+                    preferences.edit()
+                        .putString("restoreUsername", "true")
+                        .apply()
                 }
                 else {
-                    Log.d("login", "not checked")
+                    preferences.edit()
+                        .putString("restoreUsername", "false")
+                        .apply()
                 }
             }
 
