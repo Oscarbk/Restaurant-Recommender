@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 
 import com.example.restaurantrecommender.R
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var firebase: FirebaseAuth
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var rememberMe: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         val register = findViewById<Button>(R.id.register)
+        rememberMe = findViewById(R.id.rememberMe)
+
         firebase  = FirebaseAuth.getInstance()
         val preferences = getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
 
@@ -108,10 +112,34 @@ class LoginActivity : AppCompatActivity() {
                 false
             }
 
+            if (rememberMe.isChecked) {
+                Log.d("login", "The switch is in the checked state on load")
+            }
+            rememberMe.setOnCheckedChangeListener { buttonView, _ ->
+                if (buttonView.isChecked) {
+                    val preferences = getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+                    val getUsername = preferences.getString("savedUsername", "")
+                    val getPassword = preferences.getString("savedPassword", "")
+                    Log.d("login", "username gotten: ${getUsername!!}")
+
+                    if (!getUsername.isNullOrEmpty())
+                        username.setText(getUsername)
+
+                }
+                else {
+                    Log.d("login", "not checked")
+                }
+            }
+
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 val inputUsername = username.text.toString().trim()
                 val inputPassword = password.text.toString()
+
+                preferences.edit()
+                    .putString("savedUsername", inputUsername)
+                    .putString("savedPassword", inputPassword)
+                    .apply()
 
                 firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -156,6 +184,7 @@ class LoginActivity : AppCompatActivity() {
 
                         Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
+                        loading.visibility = View.GONE
                         startActivity(intent)
 
                     } else {
