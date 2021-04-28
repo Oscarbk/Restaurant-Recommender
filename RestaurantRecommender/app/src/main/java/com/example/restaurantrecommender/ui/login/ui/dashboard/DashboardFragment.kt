@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,6 +32,7 @@ class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var loadingBar: ProgressBar
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
 
     override fun onCreateView(
@@ -41,19 +43,16 @@ class DashboardFragment : Fragment() {
         dashboardViewModel =
             ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
+        //val textView: TextView = root.findViewById(R.id.text_dashboard)
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+            //textView.text = it
         })
 
         recyclerView = root.findViewById(R.id.recyclerView)
-/*
-        val restaurants = getFavorites()
-        val adapter = RestaurantAdapter(restaurants)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)*/
-        getFavorites(recyclerView)
+        loadingBar = root.findViewById(R.id.dashProgress)
 
+        loadingBar.visibility = View.VISIBLE
+        getFavorites(recyclerView)
         return root
     }
 
@@ -137,6 +136,7 @@ class DashboardFragment : Fragment() {
                         val adapter = RestaurantAdapter(favorites)
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(activity)
+                        loadingBar.visibility = View.GONE
                     }
                 }
             }
