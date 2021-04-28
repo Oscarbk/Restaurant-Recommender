@@ -125,7 +125,7 @@ class DashboardFragment : Fragment() {
                                 )
                                 Log.d("dashboard", "Added ${json.getString("name")} to favorites list")
                                 favorites.add(restaurant)
-                                Log.d("dashboard", "list so far: ${favorites.toString()}")
+                                Log.d("dashboard", "list so far: $favorites")
                             }
 
                             Log.d("dashboard", "test: $favorites")
