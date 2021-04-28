@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -19,7 +20,10 @@ import android.widget.Toast
 
 import com.example.restaurantrecommender.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
@@ -112,20 +116,48 @@ class LoginActivity : AppCompatActivity() {
                 firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val savedSearch = preferences.getString("username", "")
-                        if (savedSearch.isNullOrEmpty()) {
+                        Log.d("test3", savedSearch!!)
+                        //if (savedSearch.isNullOrEmpty()) {
                             firebaseDatabase = FirebaseDatabase.getInstance()
                             val reference = firebaseDatabase.getReference("users")
-                            val pushReference = reference.push()
+
+                            // Check if this user is already in database
+                            reference.addValueEventListener(object : ValueEventListener {
+                                override fun onCancelled(databaseError: DatabaseError) {
+
+                                }
+
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    dataSnapshot.children.forEach { data ->
+                                        val username = data.key
+                                        val toCompare = inputUsername.replace(".", "")
+                                        Log.d("test3", "current value: $username and looking for: $toCompare")
+                                        if ((username != null) && (username == toCompare)) {
+                                            preferences.edit()
+                                                    .putString("username", toCompare)
+                                                    .apply()
+                                            Log.d("test3", "found username in database: $username")
+                                            Log.d("test3", "updated sp with key = ${data.key}")
+                                        }
+                                    }
+                                }
+                            })
+
+
+                       /* val pushReference = reference.push()
                             pushReference.setValue(inputUsername)
                             val uniqueId = pushReference.key
                             preferences.edit()
                                 .putString("username", uniqueId)
-                                .apply()
-                        }
+                                .apply()*/
+                                //Log.d("test4", uniqueId!!)
+
+                       // }
 
                         Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
                         startActivity(intent)
+
                     } else {
                         val exception = task.exception
                         Toast.makeText(this@LoginActivity, "Failed: $exception", Toast.LENGTH_SHORT).show()

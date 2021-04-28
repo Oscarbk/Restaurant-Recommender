@@ -101,6 +101,7 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
         firebaseDatabase = FirebaseDatabase.getInstance()
         val preferences = holder.favorite.context.getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
         val getUserId = preferences.getString("username", "")
+        Log.d("test3", "username gotten in adapter: $getUserId")
         val reference = firebaseDatabase.getReference("users/$getUserId")
         reference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
