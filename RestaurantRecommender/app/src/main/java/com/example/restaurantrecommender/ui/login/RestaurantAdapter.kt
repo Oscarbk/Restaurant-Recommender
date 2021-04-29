@@ -144,6 +144,13 @@ class RestaurantAdapter(val sources: List<Restaurant>) : RecyclerView.Adapter<Re
             }
         }
 
+        holder.click.setOnClickListener {
+            Log.d("test4",currentSource.description)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(currentSource.description)
+            holder.name.context.startActivity(intent)
+        }
+
         /*
         val test = currentSource.url
         holder.click.setOnClickListener() {

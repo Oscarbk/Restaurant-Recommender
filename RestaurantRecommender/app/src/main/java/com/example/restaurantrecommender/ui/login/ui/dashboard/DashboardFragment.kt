@@ -116,7 +116,7 @@ class DashboardFragment : Fragment() {
                                     title = "$title1$title2",
                                     rating = json.getDouble("rating"),
                                     price = price,
-                                    description = "",
+                                    description = json.getString("url"),
                                     address = json.getJSONObject("location").getString("address1"),
                                     menu = "",
                                     iconUrl = json.getString("image_url"),

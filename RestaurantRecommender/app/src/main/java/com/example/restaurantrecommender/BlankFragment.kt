@@ -107,7 +107,7 @@ class BlankFragment : Fragment() {
                         title = "$title1$title2",
                         rating = rating,
                         price = price,
-                        description = "",
+                        description = curr.getString("url"),
                         address = address,
                         menu = "",
                         iconUrl = image,

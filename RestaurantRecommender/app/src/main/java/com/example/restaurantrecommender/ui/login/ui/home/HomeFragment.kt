@@ -149,6 +149,7 @@ class HomeFragment : Fragment() {
                 }
                 R.id.radioAny -> {
                     Log.d("filter", "price selected: $selectedPrices")
+                    selectedPrices = prices
                 }
                 else -> {
                     Log.d("error", "An unexpected error occurred: a price radio button was not selected")
@@ -184,7 +185,11 @@ class HomeFragment : Fragment() {
             val userLocation = "D.C."
 
             //Log.d("location", "lat: ${locationResult.lastLocation.latitude} and long: ${test.longitude}")
-            val apiCall = "https://api.yelp.com/v3/businesses/search?location=$userLocation&radius=$selectedDistance&food=restaurants&categories=$cuisines&price=$inputPrices"
+            var lang = "en_US"
+            if (getString(R.string.language) == "es")
+                lang = "es_ES"
+
+            val apiCall = "https://api.yelp.com/v3/businesses/search?location=$userLocation&radius=$selectedDistance&food=restaurants&categories=$cuisines&price=$inputPrices&locale=$lang"
             preferences.edit()
                 .putString("test1", apiCall)
                 .apply()
