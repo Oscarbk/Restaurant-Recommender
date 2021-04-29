@@ -54,10 +54,6 @@ class BlankFragment : Fragment() {
 
     private fun retrieveRestaurants(): List<Restaurant>{
         val oAuthToken = resources.getString(R.string.yelpKey)
-        val searchLocation = "D.C."
-        val radius = "30mi"
-
-
 
         val request = Request.Builder()
             .get()

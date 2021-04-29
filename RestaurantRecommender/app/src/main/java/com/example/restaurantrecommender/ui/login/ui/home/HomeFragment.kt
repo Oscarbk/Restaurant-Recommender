@@ -1,6 +1,7 @@
 package com.example.restaurantrecommender.ui.login.ui.home
 
 import android.R.attr.key
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -20,6 +22,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.restaurantrecommender.R
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 
 
 class HomeFragment : Fragment() {
@@ -37,6 +45,8 @@ class HomeFragment : Fragment() {
     private lateinit var priceView: LinearLayout
     private lateinit var seekDistance: SeekBar
     private lateinit var displayRange: TextView
+    private lateinit var locationProvider: FusedLocationProviderClient
+    private lateinit var test: LatLng
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -63,6 +73,9 @@ class HomeFragment : Fragment() {
         priceView = root.findViewById(R.id.priceLayout)
         seekDistance = root.findViewById(R.id.seekDistance)
         displayRange = root.findViewById(R.id.displayRange)
+        locationProvider = LocationServices.getFusedLocationProviderClient(requireActivity())
+        val preferences = requireContext().getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+
 
         anyCuisine.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isChecked) chipGroup.visibility = View.GONE
@@ -169,12 +182,106 @@ class HomeFragment : Fragment() {
                 .toLowerCase()
 
             val userLocation = "D.C."
+
+            //Log.d("location", "lat: ${locationResult.lastLocation.latitude} and long: ${test.longitude}")
             val apiCall = "https://api.yelp.com/v3/businesses/search?location=$userLocation&radius=$selectedDistance&food=restaurants&categories=$cuisines&price=$inputPrices"
+            preferences.edit()
+                .putString("test1", apiCall)
+                .apply()
+
+            checkLocationPermission()
+
+            val getLon = preferences.getString("lon", "")
+            val getLat = preferences.getString("lat", "")
+            Log.d("location", "testesjtlsj:")
+            Log.d("location", "lon: $getLon lat: $getLat")
+
+            //val apiCall = "https://api.yelp.com/v3/businesses/search?location=$userLocation&radius=$selectedDistance&food=restaurants&categories=$cuisines&price=$inputPrices"
+            /*val bundle = bundleOf("apiCall" to apiCall)
+
+            findNavController().navigate(R.id.action_navigation_home_to_blankFragment, bundle)*/
+        }
+
+        return root
+    }
+    private fun checkLocationPermission() {
+        // Determine if the user has the location permission
+        // If not, we can ask for it
+        val locationPermissionGranted = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+        if (locationPermissionGranted) {
+            Log.d("MapsActivity", "Initial permission check - granted")
+            useCurrentLocation()
+        } else {
+            Log.d("MapsActivity", "Initial permission check - not granted")
+
+            ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    200
+            )
+        }
+
+    }
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.d("MapsActivity", "Permission prompt result - granted")
+            useCurrentLocation()
+        } else {
+            Log.d("MapsActivity", "Permission prompt result - not granted")
+
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun useCurrentLocation() {
+        // Request a fresh location
+        val locationRequest = LocationRequest()
+        locationRequest.interval = 1000
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        locationProvider.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null
+        )
+    }
+    private val locationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            // A new location has been sensed
+            Log.d("MapsActivity", "New location sensed: $locationResult")
+
+            // Stop sensing new locations
+            locationProvider.removeLocationUpdates(this)
+
+            var lat = locationResult.lastLocation.latitude
+            var lon = locationResult.lastLocation.longitude
+
+            val preferences = requireContext().getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
+            preferences.edit()
+                .putString("lat", lat.toString())
+                .putString("lon", lon.toString())
+                .apply()
+
+            val apiCall = preferences.getString("test1", "")
+                ?.replace("location=D.C.", "latitude=$lat&longitude=$lon")
+            Log.d("location", "My test got: $apiCall")
+            doGeocoding(LatLng(lat, lon))
+            Log.d("location", "lat: $lat and lon: $lon")
+
             val bundle = bundleOf("apiCall" to apiCall)
 
             findNavController().navigate(R.id.action_navigation_home_to_blankFragment, bundle)
         }
+    }
 
-        return root
+    private fun doGeocoding(coords: LatLng) {
+        test = coords
+        Log.d("location", "inside of test")
     }
 }
