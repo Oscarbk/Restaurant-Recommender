@@ -44,7 +44,8 @@ class RegistrationActivity : AppCompatActivity(){
             // TODO: use string resources when second language is required
             firebase.createUserWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Successfully registered as $inputUsername", Toast.LENGTH_LONG).show()
+                    val registerSuccess = getString(R.string.registerSuccess)
+                    Toast.makeText(this, "$registerSuccess $inputUsername", Toast.LENGTH_LONG).show()
 
                     // add user to realtime database
                     firebaseDatabase = FirebaseDatabase.getInstance()
@@ -64,11 +65,13 @@ class RegistrationActivity : AppCompatActivity(){
                 else {
                     val exception = task.exception
                     if (exception is FirebaseAuthUserCollisionException) {
-                        Toast.makeText(this, "An account already exists for $inputUsername", Toast.LENGTH_LONG).show()
+                        val accountExists = getString(R.string.accountExists)
+                        Toast.makeText(this, "$accountExists $inputUsername", Toast.LENGTH_LONG).show()
                     } else {
                         // We could also split out other exceptions to further customize errors
                         // https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuthException
-                        Toast.makeText(this, "Failed to register: $exception", Toast.LENGTH_LONG).show()
+                        val failed = getString(R.string.failed)
+                        Toast.makeText(this, "$failed $exception", Toast.LENGTH_LONG).show()
                     }
                 }
             }

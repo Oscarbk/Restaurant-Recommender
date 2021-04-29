@@ -185,14 +185,16 @@ class LoginActivity : AppCompatActivity() {
 
                        // }
 
-                        Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
+                        val loggedInAs = getString(R.string.loggedInAs)
+                        Toast.makeText(this@LoginActivity, "$loggedInAs $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
                         loading.visibility = View.GONE
                         startActivity(intent)
 
                     } else {
                         val exception = task.exception
-                        Toast.makeText(this@LoginActivity, "Failed: $exception", Toast.LENGTH_SHORT).show()
+                        val failed = getString(R.string.failed)
+                        Toast.makeText(this@LoginActivity, "$failed $exception", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

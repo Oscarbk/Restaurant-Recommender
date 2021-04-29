@@ -13,7 +13,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_restaurant">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Recent Picks</string>
+    <string name="title_dashboard">Favorites</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_results">Results</string>
     <string name="rememberUser">Remember me</string>
@@ -49,4 +49,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--Toasts-->
+    <string name="loggedInAs">Logged in as</string>
+    <string name="failed">Failed:</string>
+    <string name="registerSuccess">Successfully registered as</string>
+    <string name="accountExists">An account already exists for</string>
 </resources>
