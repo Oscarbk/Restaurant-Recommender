@@ -1,0 +1,61 @@
+<resources>
+
+    <string name="language">es</string>
+
+    <string name="app_name">Recomendador de restaurantes</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Correo</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="retype_password">Escriba la contraseña otra vez</string>
+    <string name="action_sign_in">iniciar sesión</string>
+    <string name="action_register">Registrarse</string>
+    <string name="action_sign_in_short">iniciar sesión</string>
+    <string name="welcome">"¡Bienvenidos!"</string>
+    <string name="invalid_username">No es un nombre de usuario válido</string>
+    <string name="invalid_password">La contraseña debe tener más de 5 caracteres</string>
+    <string name="login_failed">"error de inicio de sesion"</string>
+    <string name="title_activity_restaurant">Actividad principal</string>
+    <string name="title_home">Casa</string>
+    <string name="title_dashboard">favoritos</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="title_results">Resultados</string>
+    <string name="rememberUser">Recuérdame</string>
+
+    <!--Strings related to home fragment-->
+    <string name="price">Precio</string>
+    <string name="at_most">no más que</string>
+    <string name="exactly">Exactamente</string>
+    <string name="at_least">Por lo menost</string>
+    <string name="any">Alguno</string>
+
+    <string name="range">Distancia</string>
+
+    <string name="cuisine">Cocina</string>
+    <string name="american">Americano</string>
+    <string name="bbq">Parilla</string>
+    <string name="chinese">Chino</string>
+    <string name="french">Francés</string>
+    <string name="hamburger">Hamburguesa</string>
+    <string name="indian">Indio</string>
+    <string name="italian">Italiano</string>
+    <string name="japanese">Japonés</string>
+    <string name="mexican">Mexicano</string>
+    <string name="pizza">Pizza</string>
+    <string name="seafood">Mariscos</string>
+    <string name="steak">Bife</string>
+    <string name="sushi">Sushi</string>
+    <string name="thai">Tailandés</string>
+
+    <string name="search">Buscar</string>
+
+    <string name="bullet">\u2022</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+
+    <!--Toasts-->
+    <string name="loggedInAs">iniciado sesión como</string>
+    <string name="failed">ha fallado:</string>
+    <string name="registerSuccess">Registrado exitosamente como</string>
+    <string name="accountExists">Ya existe una cuenta para</string>
+
+</resources>

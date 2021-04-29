@@ -10,22 +10,28 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.widget.SwitchCompat
 
 import com.example.restaurantrecommender.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var firebase: FirebaseAuth
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var rememberMe: SwitchCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
         val register = findViewById<Button>(R.id.register)
+        rememberMe = findViewById(R.id.rememberMe)
+
         firebase  = FirebaseAuth.getInstance()
         val preferences = getSharedPreferences("restaurantRecommender", Context.MODE_PRIVATE)
 
@@ -104,28 +112,89 @@ class LoginActivity : AppCompatActivity() {
                 false
             }
 
+            val restoreUsername = preferences.getString("restoreUsername", "true")
+            rememberMe.isChecked = restoreUsername == "true"
+            if (rememberMe.isChecked) {
+                Log.d("login", "The switch is in the checked state on load")
+                val getUsername = preferences.getString("savedUsername", "")
+
+                if (!getUsername.isNullOrEmpty())
+                    username.setText(getUsername)
+            }
+            rememberMe.setOnCheckedChangeListener { buttonView, _ ->
+                if (buttonView.isChecked) {
+                    preferences.edit()
+                        .putString("restoreUsername", "true")
+                        .apply()
+                }
+                else {
+                    preferences.edit()
+                        .putString("restoreUsername", "false")
+                        .apply()
+                }
+            }
+
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 val inputUsername = username.text.toString().trim()
                 val inputPassword = password.text.toString()
 
+                preferences.edit()
+                    .putString("savedUsername", inputUsername)
+                    .putString("savedPassword", inputPassword)
+                    .apply()
+
                 firebase.signInWithEmailAndPassword(inputUsername, inputPassword).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        firebaseDatabase = FirebaseDatabase.getInstance()
-                        val reference = firebaseDatabase.getReference("users")
-                        val pushReference = reference.push()
-                        pushReference.setValue(inputUsername)
-                        val uniqueId = pushReference.key
-                        preferences.edit()
-                            .putString("username", uniqueId)
-                            .apply()
+                        val savedSearch = preferences.getString("username", "")
+                        Log.d("test3", savedSearch!!)
+                        //if (savedSearch.isNullOrEmpty()) {
+                            firebaseDatabase = FirebaseDatabase.getInstance()
+                            val reference = firebaseDatabase.getReference("users")
 
-                        Toast.makeText(this@LoginActivity, "Logged in as $inputUsername", Toast.LENGTH_SHORT).show()
+                            // Check if this user is already in database
+                            reference.addValueEventListener(object : ValueEventListener {
+                                override fun onCancelled(databaseError: DatabaseError) {
+
+                                }
+
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    dataSnapshot.children.forEach { data ->
+                                        val username = data.key
+                                        val toCompare = inputUsername.replace(".", "")
+                                        Log.d("test3", "current value: $username and looking for: $toCompare")
+                                        if ((username != null) && (username == toCompare)) {
+                                            preferences.edit()
+                                                    .putString("username", toCompare)
+                                                    .apply()
+                                            Log.d("test3", "found username in database: $username")
+                                            Log.d("test3", "updated sp with key = ${data.key}")
+                                        }
+                                    }
+                                }
+                            })
+
+
+                       /* val pushReference = reference.push()
+                            pushReference.setValue(inputUsername)
+                            val uniqueId = pushReference.key
+                            preferences.edit()
+                                .putString("username", uniqueId)
+                                .apply()*/
+                                //Log.d("test4", uniqueId!!)
+
+                       // }
+
+                        val loggedInAs = getString(R.string.loggedInAs)
+                        Toast.makeText(this@LoginActivity, "$loggedInAs $inputUsername", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, RestaurantActivity::class.java)
+                        loading.visibility = View.GONE
                         startActivity(intent)
+
                     } else {
                         val exception = task.exception
-                        Toast.makeText(this@LoginActivity, "Failed: $exception", Toast.LENGTH_SHORT).show()
+                        val failed = getString(R.string.failed)
+                        Toast.makeText(this@LoginActivity, "$failed $exception", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
