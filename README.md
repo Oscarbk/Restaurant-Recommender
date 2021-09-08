@@ -1,19 +1,33 @@
-# Check-in-1
-* I chose to implement the firebase db complexity
-  * A user can create a new account and use it to sign into the app
-  * The sign-up screen ensures passwords match and account does not already exist
-    * Later I'll make sure passwords are strong
-  * Log-in screen logs you in if email and password are correct
-  * I'll use FB to store a user's recent restaurant choices and custom preferences later
-    * setup the recyclerView for the recent picks fragment
-* I also set up a large part of the home screen fragment
-  * Only UI components are set up
+Android Restaurant Recommender is an app which recommends nearby restaurants to eat at depending on a user’s preferences. Restaurant results are sorted by reviews and clicking on a restaurant pulls up its information (website, phone number) as well as user reviews. It also keeps track of restaurants previously ordered from for each user account. Supports English and Spanish.
 
-# Check-in-2
-* I chose to make significant progress towards completing the home fragment and results fragment
- * The UI components of the home fragment now affect the search query for the Yelp API call
-  * I will get the user's location next check in. For now it's set to D.C. by default
- * The results fragment dynamically shows restaurants based on the user's search query
-  * A user can also favorite a restaurant by tapping the star icon in the top right (animation is a work in progress)
-   * Currently the FB database updates when a user is added and they add restaurants to their favorites list
-    * Next check in will make sure favorited restaurants for a user are added to the favorites fragment
+----
+
+<p align="middle">
+  <img src="./Screenshots/AccountRegistered.png" width="200" />
+  <img src="./Screenshots/LoginScreen.png" width="200" />
+  <img src="./Screenshots/Spanish.png" width="200" />
+  <img src="./Screenshots/LoggedIn.png" width="200" />
+</p>
+<p align="middle">The user is initialy prompted with a screen where they can create an account using Firebase and sign in. Spanish is also supported based on the user's language preferences</>
+ 
+----
+ 
+<p align="middle">
+  <img src="./Screenshots/FiltersInit.png" width="200" />
+  <img src="./Screenshots/Filters.png" width="200" />
+</p>
+<p align="middle">Once signed in, the user can select a variety of filters to search for restaurants nearby</>
+ 
+----
+ 
+<p align="middle">
+  <img src="./Screenshots/Results.png" width="200" />
+  <img src="./Screenshots/Results2.png" width="200" />
+</p>
+<p align="middle">The user can view a variety of restaurants based on their search preferences. Tapping on the star icon will add the restaurant to the user's favorites tab. Tapping on a restaurants card view will take the user to that restaurants Yelp page, where they can see additional information such as reviews, hours, location, phone number, etc.</>
+
+----
+ 
+## TODO
+* Ensure passwords are strong before user is allowed to sign up
+* Set up a recyclerView for the recent picks fragment
