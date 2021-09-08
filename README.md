@@ -1,4 +1,4 @@
-Android Restaurant Recommender is an app which recommends nearby restaurants to eat at depending on a user’s preferences. Restaurant results are sorted by reviews and clicking on a restaurant pulls up its information (website, phone number) as well as user reviews. It also keeps track of restaurants previously ordered from for each user account. Supports English and Spanish.
+Android Restaurant Recommender is an app which recommends nearby restaurants to eat at depending on a user’s preferences. Restaurant results are sorted by reviews and clicking on a restaurant pulls up its Yelp page for additional information. It also keeps track of a user's favorite restaurants. Supports English and Spanish.
 
 ----
 
